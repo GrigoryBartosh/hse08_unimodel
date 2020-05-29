@@ -1,0 +1,68 @@
+sudo apt-get update
+#--------------------------------------------
+sudo rm /var/lib/apt/lists/lock
+sudo rm /var/cache/apt/archives/lock
+sudo rm /var/lib/dpkg/lock
+sudo dpkg --configure -a
+#--------------------------------------------
+sudo apt-get install htop mc
+
+conda install -c conda-forge tensorflow
+conda install -c hcc pycocotools 
+conda install -c anaconda gensim
+conda install -c conda-forge ftfy
+conda install -c conda-forge spacy
+python
+import nltk
+nltk.download('punkt')
+python -m spacy download en
+
+cd /home/ubuntu/.ssh
+ssh-keygen -t rsa -C "grishabartosh@yandex.ru"
+cat id_rsa.pub
+
+git config --global user.name Grigory Bartosh
+git config --global user.email grishabartosh@yandex.ru
+
+cd /home/ubuntu
+git clone git@bitbucket.org:gbarto/unimodel2.git
+cd unimodel2
+mkdir data
+cd data
+mkdir datasets
+cd datasets
+mkdir coco
+cd coco
+wget http://images.cocodataset.org/zips/train2014.zip
+wget http://images.cocodataset.org/zips/val2014.zip
+wget http://images.cocodataset.org/annotations/annotations_trainval2014.zip
+cd /home/ubuntu/data
+mkdir models
+cd models
+scp /home/grigory/Documents/AU_06/unimodel2/data/models/GoogleNews-vectors-negative300.bin aws:/home/ubuntu/unimodel2/data/models
+scp /home/grigory/Documents/AU_06/unimodel2/data/models/pretrained_classif_152_2400.pth.tar aws:/home/ubuntu/unimodel2/data/models
+
+cd /home/ubuntu/data/datasets/coco
+mkdir images
+unzip annotations_trainval2014.zip -d .
+unzip val2014.zip -d images/
+unzip train2014.zip -d images/
+rm annotations_trainval2014.zip
+rm val2014.zip
+rm train2014.zip
+mv annotations_trainval2014 annotations
+
+#------------------------------------------------------
+
+function venv()
+{
+  source activate pytorch_p36;
+}
+
+function devenv()
+{
+  conda deactivate;
+}
+
+export PYTHONPATH="${PYTHONPATH}:/home/ubuntu/unimodel2"
+export LC_ALL=C
